@@ -4,8 +4,8 @@ const popupCloseButtonElement = popupElement.querySelector('.popup__close-icon')
 const popupOpenButtonElement = document.querySelector('.profile__edit-button'); // определили кнопку открытия попапа
 const titleName = document.querySelector('.profile__title-name');
 const subtitle = document.querySelector('.profile__subtitle');
-const inputName = popupElement.querySelector('.popup__input_name');
-const inputJob = popupElement.querySelector('.popup__input_job');
+const inputName = popupElement.querySelector('.popup__input_info_name');
+const inputJob = popupElement.querySelector('.popup__input_info_job');
 let formElement = popupElement.querySelector('.popup__form');
 
 // пишем функции
