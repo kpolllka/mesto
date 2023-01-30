@@ -1,32 +1,120 @@
-// Делаем выборку DOM элементов
-const popupElement = document.querySelector('.popup'); // определили элемент попап
-const popupCloseButtonElement = popupElement.querySelector('.popup__close-icon'); // определили кнопку закрытия попапа, сузили обл поиска со всего документа, до секции попапа
-const popupOpenButtonElement = document.querySelector('.profile__edit-button'); // определили кнопку открытия попапа
+//Выборка элементов для работы с карточками
+const elementTemplate = document.querySelector('#template-element').content.querySelector('.element'); //нашли template-элемент и внутри него нашли карточку со страницы
+const list = document.querySelector('.elements'); //определили место, куда вставляем карточки
+const popupImg =  document.querySelector('.popup__container-img');
+const popupPhotoName = document.querySelector('.popup__container-photo-name');
+
+//сделали выборку 3х попапов
+const popupInfo = document.querySelector('.popup_info');
+const popupCards = document.querySelector('.popup_cards');
+const popupPhoto = document.querySelector('.popup_photo');
+
+//сделали выборку кнопок открытия для каждого из 3х попапов
+const popupInfoOpen = document.querySelector('.profile__edit-button');
+const popupCardsOpen = document.querySelector('.profile__add-button');
+const popupPhotoOpen = document.querySelector('.element__mask-group');
+
+//сделали выборку кнопок закрытия для каждого из 3х попапов
+const popupCloseButtons = document.querySelectorAll('.popup__close-icon');
+
+//переменные для заполнения Инпутов popupInfo
 const titleName = document.querySelector('.profile__title-name');
 const subtitle = document.querySelector('.profile__subtitle');
-const inputName = popupElement.querySelector('.popup__input_info_name');
-const inputJob = popupElement.querySelector('.popup__input_info_job');
-let formElement = popupElement.querySelector('.popup__form');
+const inputName = popupInfo.querySelector('.popup__input_info_name');
+const inputJob = popupInfo.querySelector('.popup__input_info_job');
 
-// пишем функции
-function openPopup() {
-  popupElement.classList.add('popup_opened'); // реализация функции открытия попапа
-  inputName.value =  titleName.textContent; // реализация получения ранее введенных данных в Input
-  inputJob.value = subtitle.textContent; // реализация получения ранее введенных данных в Input
+//переменные для заполнения Инпутов popupCards
+const inputPhotoName = popupCards.querySelector('.popup__input_photo_name');
+const inputPhotoLink = popupCards.querySelector('.popup__input_photo_link');
+
+//переменная для отправки формы попапа
+const formElementInfo = document.querySelector('.popup__form-info');
+const formElementCards = document.querySelector('.popup__form-cards');
+
+
+//РАБОТА С КАРТОЧКАМИ
+function deleteCard (evt) { //удаление карточки по клику на корзину
+  evt.target.closest('.element').remove();
 }
 
-function closePopup() { //можно реализовать через одну функцию, вместо add и remove - использовать toggle, задав 1 переменную togglePopupVisibility вместо openPopup и closePopup
-  popupElement.classList.remove('popup_opened'); // реализация функции закрытия попапа
-};
+function likeCard (evt) { //лайк и не лайк карточки
+  evt.target.classList.toggle('element__like_active');
+}
 
-function handleFormSubmit (evt) { // Обработчик «отправки» формы
+function createCard(item) { //создание карточки
+  const card = elementTemplate.cloneNode(true);
+    card.querySelector('.element__group-title').textContent = item.name;
+    card.querySelector('.element__mask-group').src = item.link;
+    card.querySelector('.element__mask-group').setAttribute('alt', item.name); //вариант добавления через СетАтрибут
+
+    card.querySelector('.element__trash').addEventListener('click', deleteCard); // вешаем слушатель на корзину карточки
+    card.querySelector('.element__like').addEventListener('click', likeCard); // вешаем слушатель на Лайк карточки
+
+    const viewPhoto = card.querySelector('.element__mask-group');
+    viewPhoto.addEventListener('click', () => { //вешаем слушатель на фото, по которому открывается попап
+      popupImg.src = item.link;
+      popupImg.alt = item.name;
+      popupPhotoName.textContent = item.name;
+      togglePopup(popupPhoto);
+    });
+
+    return card;
+}
+
+function renderCards(items) { // вариант реализации добавления карточек через создание нового массива карточек
+  const cards = items.map((item) => {
+    return createCard(item);
+  });
+
+  list.prepend(...cards);
+}
+renderCards(initialCards);
+
+
+// РЕАЛИЗАЦИЯ ПОПАПОВ
+const togglePopup = function (popup) { //добавление и удаление класса для открытого попапа
+  popup.classList.toggle('popup_opened');
+}
+
+function openAndClosePopupInfo() {
+  inputName.value =  titleName.textContent; // реализация получения ранее введенных данных в Input
+  inputJob.value = subtitle.textContent;
+  togglePopup(popupInfo);
+}
+
+function openAndClosePopupCards() { //открытие и закрытие попапа для карточек
+  togglePopup(popupCards);
+}
+
+popupCloseButtons.forEach((button) => { //перебор кнопок закрытия попапа и закрытие попапа
+  button.addEventListener('click', function(evt) {
+    togglePopup(evt.target.closest('.popup'));
+  });
+});
+
+function handleFormSubmitInfo (evt) { // Обработчик «отправки» формы для профиля
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
   titleName.textContent = inputName.value;
   subtitle.textContent = inputJob.value;
-  closePopup();
+  togglePopup(popupInfo);
 }
 
+function handleFormSubmitCards (evt) { // Обработчик «отправки» формы для карточек
+  evt.preventDefault();
+  const newCard = {};
+  newCard.name = inputPhotoName.value;
+  newCard.link = inputPhotoLink.value;
+
+  list.prepend(createCard(newCard));
+  togglePopup(popupCards);
+  inputPhotoName.value = '';
+  inputPhotoLink.value = '';
+}
+
+
 // Регистрируем обработчики событий по клику
-popupOpenButtonElement.addEventListener('click', openPopup); //открытие попапа, можно реализовать одой функцией используя переменную togglePopupVisibility вместо openPopup
-popupCloseButtonElement.addEventListener('click', closePopup); //закрытие попапа, можно реализовать одой функцией используя переменную togglePopupVisibility вместо closePopup
-formElement.addEventListener('submit', handleFormSubmit); // сохранение данных на сайте при нажатии кнопки Сохранить
+popupInfoOpen.addEventListener('click', openAndClosePopupInfo); //открытие попапа
+popupCardsOpen.addEventListener('click', openAndClosePopupCards);
+
+formElementInfo.addEventListener('submit', handleFormSubmitInfo); // сохранение данных на сайте при нажатии кнопки Сохранить
+formElementCards.addEventListener('submit', handleFormSubmitCards);

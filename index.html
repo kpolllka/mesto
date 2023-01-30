@@ -29,53 +29,18 @@
       </section>
 
       <section class="elements">
-        <article class="element">
-          <img class="element__mask-group" src="./images/Karachaevsk.jpg" alt="фотография достопримечательности Карачаевска">
-          <div class="element__group">
-            <h2 class="element__group-title">Карачаево-Черкесия</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-
-        <article class="element">
-          <img class="element__mask-group" src="./images/Plato_Putorana.jpg" alt="фотография Плато Путорана">
-          <div class="element__group">
-            <h2 class="element__group-title">Плато Путорана</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-
-        <article class="element">
-          <img class="element__mask-group" src="./images/Dombai.jpg" alt="фотография гор Домбая">
-          <div class="element__group">
-            <h2 class="element__group-title">Домбай</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-
-        <article class="element">
-          <img class="element__mask-group" src="./images/Altai.jpg" alt="фотография природы Алтая">
-          <div class="element__group">
-            <h2 class="element__group-title">Алтай</h2>
-            <button class="element__like"></button>
-          </div>
-        </article>
-
-        <article class="element">
-          <img class="element__mask-group" src="./images/Elbrus.jpg" alt="фотография горы Эльбрус">
-          <div class="element__group">
-            <h2 class="element__group-title">Гора Эльбрус</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-
-        <article class="element">
-          <img class="element__mask-group" src="./images/Kamchatka.jpg" alt="фотография природы Камчатки">
-          <div class="element__group">
-            <h2 class="element__group-title">Камчатка</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
+        <template id="template-element">
+          <article class="element">
+            <div class="element__image">
+              <img class="element__mask-group" src="#" alt="">
+              <button class="element__trash" type="button"></button>
+            </div>
+            <div class="element__group">
+              <h2 class="element__group-title"></h2>
+              <button class="element__like" type="button"></button>
+            </div>
+          </article>
+        </template>
       </section>
     </main>
 
@@ -84,18 +49,39 @@
     </footer>
   </div>
 
-  <div class="popup">
+  <div class="popup popup_info">
     <div class="popup__container">
       <button class="popup__close-icon" type="button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__form" name="popup-form">
+      <form class="popup__form popup__form-info" name="popup-form">
         <input class="popup__input popup__input_info_name" name="name" id="name-input" type="text" placeholder="Имя" required>
-        <input class="popup__input popup__input_info_job" name="job" id="job-input" type="text" placeholder="Профессия">
+        <input class="popup__input popup__input_info_job" name="job" id="job-input" type="text" placeholder="Профессия" required>
         <button class="popup__button" type="submit">Сохранить</button>
       </form>
     </div>
   </div>
 
-  <script src="./scripts/index.js"></script>
+  <div class="popup popup_cards">
+    <div class="popup__container">
+      <button class="popup__close-icon" type="button"></button>
+      <h2 class="popup__title">Новое место</h2>
+      <form class="popup__form popup__form-cards" name="popup-form">
+        <input class="popup__input popup__input_photo_name" name="name" id="photo-name" type="text" placeholder="Название" required>
+        <input class="popup__input popup__input_photo_link" name="link" id="photo-link" type="text" placeholder="Ссылка на картинку" required>
+        <button class="popup__button" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup popup_photo">
+    <div class="popup__container-photo">
+      <button class="popup__close-icon" type="button"></button>
+      <img class="popup__container-img" src="./images/Plato_Putorana.jpg" alt="">
+      <p class="popup__container-photo-name">Плато Путорана</p>
+    </div>
+  </div>
+
+  <script src="./scripts/indexCards.js" defer></script>
+  <script src="./scripts/index.js" defer></script>
 </body>
 </html>
