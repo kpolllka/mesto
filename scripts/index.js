@@ -1,6 +1,6 @@
 //Выборка элементов для работы с карточками
 const elementTemplate = document.querySelector('#template-element').content.querySelector('.element'); //нашли template-элемент и внутри него нашли карточку со страницы
-const list = document.querySelector('.elements'); //определили место, куда вставляем карточки
+const elementsContainer = document.querySelector('.elements'); //определили место, куда вставляем карточки
 const popupImg =  document.querySelector('.popup__container-img');
 const popupPhotoName = document.querySelector('.popup__container-photo-name');
 
@@ -45,7 +45,7 @@ function createCard(item) { //создание карточки
   const card = elementTemplate.cloneNode(true);
     card.querySelector('.element__group-title').textContent = item.name;
     card.querySelector('.element__mask-group').src = item.link;
-    card.querySelector('.element__mask-group').setAttribute('alt', item.name); //вариант добавления через СетАтрибут
+    card.querySelector('.element__mask-group').alt = item.name;
 
     card.querySelector('.element__trash').addEventListener('click', deleteCard); // вешаем слушатель на корзину карточки
     card.querySelector('.element__like').addEventListener('click', likeCard); // вешаем слушатель на Лайк карточки
@@ -66,7 +66,7 @@ function renderCards(items) { // вариант реализации добав�
     return createCard(item);
   });
 
-  list.prepend(...cards);
+  elementsContainer.prepend(...cards);
 }
 renderCards(initialCards);
 
@@ -76,21 +76,20 @@ const togglePopup = function (popup) { //добавление и удалени�
   popup.classList.toggle('popup_opened');
 }
 
-function openAndClosePopupInfo() {
+function openPopupInfo() {
   inputName.value =  titleName.textContent; // реализация получения ранее введенных данных в Input
   inputJob.value = subtitle.textContent;
   togglePopup(popupInfo);
 }
 
-function openAndClosePopupCards() { //открытие и закрытие попапа для карточек
+function openPopupCards() { //открытие попапа для карточек
   togglePopup(popupCards);
 }
 
-popupCloseButtons.forEach((button) => { //перебор кнопок закрытия попапа и закрытие попапа
-  button.addEventListener('click', function(evt) {
-    togglePopup(evt.target.closest('.popup'));
-  });
-});
+popupCloseButtons.forEach(button => {// делаем перебор кнопок попапа
+  const popup = button.closest('.popup');
+  button.addEventListener('click', () => togglePopup(popup)); // запустили закрытие выбранного попапа по клику на кнопку
+})
 
 function handleFormSubmitInfo (evt) { // Обработчик «отправки» формы для профиля
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
@@ -105,7 +104,7 @@ function handleFormSubmitCards (evt) { // Обработчик «отправк�
   newCard.name = inputPhotoName.value;
   newCard.link = inputPhotoLink.value;
 
-  list.prepend(createCard(newCard));
+  elementsContainer.prepend(createCard(newCard));
   togglePopup(popupCards);
   inputPhotoName.value = '';
   inputPhotoLink.value = '';
@@ -113,8 +112,8 @@ function handleFormSubmitCards (evt) { // Обработчик «отправк�
 
 
 // Регистрируем обработчики событий по клику
-popupInfoOpen.addEventListener('click', openAndClosePopupInfo); //открытие попапа
-popupCardsOpen.addEventListener('click', openAndClosePopupCards);
+popupInfoOpen.addEventListener('click', openPopupInfo); //открытие попапа
+popupCardsOpen.addEventListener('click', openPopupCards);
 
 formElementInfo.addEventListener('submit', handleFormSubmitInfo); // сохранение данных на сайте при нажатии кнопки Сохранить
 formElementCards.addEventListener('submit', handleFormSubmitCards);
