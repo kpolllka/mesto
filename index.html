@@ -53,9 +53,11 @@
     <div class="popup__container">
       <button class="popup__close-icon" type="button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__form popup__form-info" name="popup-form">
-        <input class="popup__input popup__input_info_name" name="name" id="name-input" type="text" placeholder="Имя" required>
-        <input class="popup__input popup__input_info_job" name="job" id="job-input" type="text" placeholder="Профессия" required>
+      <form class="popup__form popup__form-info" name="popup-form" novalidate>
+        <input class="popup__input popup__input_info_name" name="name" id="name-input" type="text" placeholder="Имя" minlength="2" maxlength="40" required>
+        <span class="popup__input-error name-input-error"></span>
+        <input class="popup__input popup__input_info_job" name="job" id="job-input" type="text" placeholder="Профессия" minlength="2" maxlength="200" required>
+        <span class="popup__input-error job-input-error"></span>
         <button class="popup__button" type="submit">Сохранить</button>
       </form>
     </div>
@@ -65,9 +67,11 @@
     <div class="popup__container">
       <button class="popup__close-icon" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form class="popup__form popup__form-cards" name="popup-form">
-        <input class="popup__input popup__input_photo_name" name="name" id="photo-name" type="text" placeholder="Название" required>
-        <input class="popup__input popup__input_photo_link" name="link" id="photo-link" type="text" placeholder="Ссылка на картинку" required>
+      <form class="popup__form popup__form-cards" name="popup-form" novalidate>
+        <input class="popup__input popup__input_photo_name" name="title" id="title-input" type="text" placeholder="Название" minlength="2" maxlength="30" required>
+        <span class="popup__input-error title-input-error"></span>
+        <input class="popup__input popup__input_photo_link" name="link" id="link-input" type="url" placeholder="Ссылка на картинку" required>
+        <span class="popup__input-error link-input-error"></span>
         <button class="popup__button" type="submit">Сохранить</button>
       </form>
     </div>
@@ -76,12 +80,13 @@
   <div class="popup popup_photo">
     <div class="popup__container-photo">
       <button class="popup__close-icon" type="button"></button>
-      <img class="popup__container-img" src="./images/Plato_Putorana.jpg" alt="">
-      <p class="popup__container-photo-name">Плато Путорана</p>
+      <img class="popup__container-img" src="#" alt="">
+      <p class="popup__container-photo-name"></p>
     </div>
   </div>
 
   <script src="./scripts/indexCards.js" defer></script>
   <script src="./scripts/index.js" defer></script>
+  <script src="./scripts/validate.js" defer></script>
 </body>
 </html>
