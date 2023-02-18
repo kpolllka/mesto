@@ -67,7 +67,7 @@
     <div class="popup__container">
       <button class="popup__close-icon" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form class="popup__form popup__form-cards" name="popup-form" novalidate>
+      <form class="popup__form popup__form-cards" id="form-popup_cards" name="popup-form" novalidate>
         <input class="popup__input popup__input_photo_name" name="title" id="title-input" type="text" placeholder="Название" minlength="2" maxlength="30" required>
         <span class="popup__input-error title-input-error"></span>
         <input class="popup__input popup__input_photo_link" name="link" id="link-input" type="url" placeholder="Ссылка на картинку" required>
@@ -85,6 +85,7 @@
     </div>
   </div>
 
+  <script src="./scripts/constants.js" defer></script>
   <script src="./scripts/indexCards.js" defer></script>
   <script src="./scripts/index.js" defer></script>
   <script src="./scripts/validate.js" defer></script>

@@ -21,6 +21,16 @@ const hideInputError = (formElement, inputElement, obj) => {
   errorElement.textContent = '';
 };
 
+function clearErrors() {  //функция очистки формы от ошибок
+  const inputs = Array.from(document.querySelectorAll('.popup__input'));
+  const errorInput = Array.from(document.querySelectorAll('.popup__input-error'));
+
+  errorInput.forEach((errorElement) => (errorElement.textContent = ''));
+  inputs.forEach((input) => {
+    input.classList.remove('popup__input_type_error');
+  });
+}
+
 const checkInputValidity = (formElement, inputElement, obj) => {
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputElement.validationMessage, obj);
@@ -34,6 +44,13 @@ const setEventListeners = (formElement, obj) => {
   const buttonElement = formElement.querySelector(obj.submitButtonSelector);
 
   toggleButtonState(inputList, buttonElement, obj);
+
+  formElement.addEventListener('reset', () => {
+    //`setTimeout` нужен для того, чтобы дождаться очищения формы (вызов уйдет в конце стека) и только потом вызвать `toggleButtonState`
+     setTimeout(() => {
+      toggleButtonState(inputList, buttonElement, obj)
+     }, 0); // достаточно указать 0 миллисекунд, чтобы после `reset` уже сработало действие
+    });
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
