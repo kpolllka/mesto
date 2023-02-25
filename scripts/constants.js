@@ -30,3 +30,6 @@ const inputPhotoLink = popupCards.querySelector('.popup__input_photo_link');
 //переменная для отправки формы попапа
 const formElementInfo = document.querySelector('.popup__form-info');
 const formElementCards = document.querySelector('.popup__form-cards');
+
+//переменная для очистки Инпутов в popupCards после отправки формы
+const formPopupCards = popupCards.querySelector('#form-popup_cards');

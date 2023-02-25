@@ -96,7 +96,8 @@ function handleFormSubmitCards (evt) { // Обработчик «отправк�
   elementsContainer.prepend(createCard(newCard));
   closePopup(popupCards);
 
-  document.querySelector('#form-popup_cards').reset(); //очистка полей формы после отправки формы
+  formPopupCards.reset(); //очистка полей формы после отправки формы
+
   clearErrors();
 }
 
