@@ -1,5 +1,5 @@
 //Пишем переменные
-const initialCards = [ //массив карточек на странице
+export const initialCards = [ //массив карточек на странице
   {
     name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
