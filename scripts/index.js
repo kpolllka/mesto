@@ -57,7 +57,6 @@ function openPopupInfo() { //открытие попапа профиля
   inputName.value = titleName.textContent; // реализация получения ранее введенных данных в Input
   inputJob.value = subtitle.textContent;
   openPopup(popupInfo);
-  clearErrors();
 }
 
 function openPopupCards() { //открытие попапа для карточек
@@ -97,29 +96,30 @@ popupElement.forEach((popup) => {  //закрытие попала по клик
 });
 
 // ОТРИСОВКА КАРТОЧЕК МАССИВА
-initialCards.forEach((data) => { //отрисовка карточек из массива
-  const card = new Card(data, '#template-element', openPopupPhoto);
-  const cardElement = card.generateCard();
+function createCard(card) { //создали новую карточку
+  return new Card(card, '#template-element', openPopupPhoto).generateCard();
+}
 
-  elementsContainer.append(cardElement); // Добавляем в DOM
+function renderCard(card) { //прописали место и логику добавления карточек
+  elementsContainer.append(createCard(card));
+}
+
+initialCards.forEach((card) => { //отрисовали карточки из массива
+  renderCard(card);
 });
 
 // РЕАЛИЗАЦИЯ ОТПРАВКИ ФОРМ
-function handleFormSubmitCards(evt) {  // Обработчик «отправки» формы для карточек
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+function handleFormSubmitCards(evt) {  //обработчик «отправки» формы для карточек
+  evt.preventDefault(); //эта строчка отменяет стандартную отправку формы.
   const newCard = {};
   newCard.name = inputPhotoName.value;
   newCard.link = inputPhotoLink.value;
-  const card = new Card(newCard, '#template-element', openPopupPhoto);
-  const newCardElement = card.generateCard();
 
-  elementsContainer.prepend(newCardElement); //добавление новой карточки
+  elementsContainer.prepend(createCard(newCard)); //добавление новой карточки
 
   closePopup(popupCards);
 
   formPopupCards.reset(); //очистка полей формы после отправки формы
-
-  clearErrors();
 }
 
 function handleFormSubmitInfo(evt) { // Обработчик «отправки» формы для профиля
@@ -129,29 +129,24 @@ function handleFormSubmitInfo(evt) { // Обработчик «отправки�
   closePopup(popupInfo);
 }
 
-// РЕАЛИЗАЦИЯ ОЧИСТКИ ФОРМЫ ОТ ОШИБОК
-function clearErrors() {
-  const inputs = Array.from(document.querySelectorAll('.popup__input'));
-  const errorInput = Array.from(document.querySelectorAll('.popup__input-error'));
-
-  errorInput.forEach((errorElement) => (errorElement.textContent = ''));
-  inputs.forEach((input) => {
-    input.classList.remove('popup__input_type_error');
-  });
-}
-
-
-
-
+// РЕАЛИЗАЦИЯ ВАЛИДАЦИИ ФОРМ ПРОФИЛЯ И КАРТОЧЕК
 const infoFormValidation = new FormValidator (formElementInfo, object); //экземпляр валидации для профиля
 const cardsFormValidation = new FormValidator (formElementCards, object); //экземпляр валидации для добавления карточки
 
 infoFormValidation.enableValidation(); //запуск валидации в попапе профиля
 cardsFormValidation.enableValidation(); //запуск валидации в попапе добавления карточек
 
-// Регистрируем обработчики событий по клику
-popupInfoOpen.addEventListener('click', openPopupInfo); //открытие попапа с профилем пользователя
-popupCardsOpen.addEventListener('click', openPopupCards); //открытие попапа добавления новой карточки
+// РЕГИСТРИРУЕМ ОБРАБОТЧИКИ СОБЫТИЙ ПО КЛИКУ
+popupInfoOpen.addEventListener('click', () => { //открытие попапа с профилем пользователя
+  infoFormValidation.resetValidation(); //очистка формы от ошибок, которые могли остаться от предыдущего ввода данных
+  openPopupInfo();
+});
 
-formElementInfo.addEventListener('submit', handleFormSubmitInfo); // сохранение данных на сайте при нажатии кнопки Сохранить
-formElementCards.addEventListener('submit', handleFormSubmitCards);
+popupCardsOpen.addEventListener('click', () => { //открытие попапа добавления новой карточки
+  cardsFormValidation.resetValidation(); //очистка формы от ошибок, которые могли остаться от предыдущего ввода данных
+  openPopupCards();
+});
+
+
+formElementInfo.addEventListener('submit', handleFormSubmitInfo); // сохранение данных профиля на сайте при нажатии кнопки Сохранить
+formElementCards.addEventListener('submit', handleFormSubmitCards); // сохранение данных карточки на сайте при нажатии кнопки Сохранить

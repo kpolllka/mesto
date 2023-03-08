@@ -37,12 +37,6 @@ export class FormValidator {
 
     this._toggleButtonState();
 
-    this._formElement.addEventListener('reset', () => {
-      setTimeout(() => { //`setTimeout` нужен для того, чтобы дождаться очищения формы (вызов уйдет в конце стека) и только потом вызвать `toggleButtonState`
-        this._toggleButtonState()
-      }, 0); // достаточно указать 0 миллисекунд, чтобы после `reset` уже сработало действие
-    });
-
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         this._checkInputValidity(inputElement);
@@ -67,6 +61,14 @@ export class FormValidator {
       this._buttonElement.disabled = false;
     }
   };
+
+  resetValidation() {
+    this._toggleButtonState(); //<== управляем кнопкой ==
+
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement) //<==очищаем ошибки ==
+    });
+  }
 
   enableValidation () {
     this._setEventListeners();
