@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="./pages/index.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Место</title>
 </head>
@@ -16,7 +15,7 @@
     <main>
       <section class="profile">
         <div class="profile__data">
-          <img class="profile__avatar" src="./images/Avatar.jpg" alt="аватар пользователя странички">
+          <img class="profile__avatar" src="<%=require("./images/Avatar.jpg")%>" alt="аватар пользователя странички">
           <div class="profile__info">
             <div class="profile__title">
               <h2 class="profile__title-name">Жак-Ив Кусто</h2>
@@ -68,7 +67,7 @@
       <button class="popup__close-icon" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
       <form class="popup__form popup__form-cards" id="form-popup_cards" name="popup-form" novalidate>
-        <input class="popup__input popup__input_photo_name" name="title" id="title-input" type="text" placeholder="Название" minlength="2" maxlength="30" required>
+        <input class="popup__input popup__input_photo_name" name="name" id="title-input" type="text" placeholder="Название" minlength="2" maxlength="30" required>
         <span class="popup__input-error title-input-error"></span>
         <input class="popup__input popup__input_photo_link" name="link" id="link-input" type="url" placeholder="Ссылка на картинку" required>
         <span class="popup__input-error link-input-error"></span>
@@ -84,7 +83,5 @@
       <p class="popup__container-photo-name"></p>
     </div>
   </div>
-
-  <script src="./scripts/index.js" type="module" defer></script>
 </body>
 </html>
