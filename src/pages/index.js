@@ -23,11 +23,11 @@ import {
 //ПОПАП ИНФОРМАЦИИ ПОЛЬЗОВАТЕЛЯ
 const userInfo = new UserInfo({ name: titleName, job: subtitle });
 
-const infoFormSubmit = ({ name, job }) => {
+const handleProfileFormSubmit = ({ name, job }) => {
   userInfo.setUserInfo({ name, job });
 };
 
-const popupWithInfo = new PopupWithForm(popupInfo, infoFormSubmit);
+const popupWithInfo = new PopupWithForm(popupInfo, handleProfileFormSubmit);
 popupWithInfo.setEventListeners();
 
 function openPopupInfo() { //открытие попапа профиля
