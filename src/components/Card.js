@@ -1,10 +1,14 @@
 export class Card {
-  constructor(data, templateSelector, openPopupPhoto) {
+  constructor({data, userId, templateSelector, openPopupPhoto, handleDelCard}) {
     this._name = data.name;
     this._link = data.link;
+    this._cardId = data._id;
+    this._userId = userId;
     this._data = data;
     this._openPopupPhoto = openPopupPhoto;
     this._templateSelector = templateSelector;
+    this._handleDelCard = handleDelCard;
+    this._owner = data.owner._id;
   }
 
   _getTemplate() {
@@ -23,11 +27,13 @@ export class Card {
     this._trash = this._card.querySelector('.element__trash'); //нашли элемент корзины карточки
     this._like = this._card.querySelector('.element__like'); //нашли элемент like карточки
 
+    this._delCardButton();
+
     this._setEventListeners();
     return this._card;
   }
 
-  _removeCard() { //метод удаления карточки
+  removeCard() { //метод удаления карточки
     this._card.remove();
     this._card = null
   }
@@ -38,7 +44,7 @@ export class Card {
 
   _setEventListeners() {
     this._trash.addEventListener('click', () => { // вешаем слушатель на корзину карточки
-        this._removeCard();
+        this._handleDelCard({cardId: this._cardId});
       });
 
     this._like.addEventListener('click', () => { // вешаем слушатель на лайк карточки
@@ -49,4 +55,11 @@ export class Card {
         this._openPopupPhoto (this._data)
       });
   }
+
+  _delCardButton() {
+    if (this._owner !== this._userId) {
+      this._trash.remove();
+    }
+ }
+
 }
