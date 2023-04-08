@@ -1,15 +1,20 @@
 import { Popup } from './Popup.js'
 
 export class PopupWithDelCards extends Popup {
-  constructor(selector){
-    super(selector)
-    this._form = document.querySelector('.popup__form');
+  constructor(selector) {
+    super(selector);
+    this._form = this._popup.querySelector('.popup__form');
+    this._button = this._popup.querySelector('.popup__button');
+    this._saveButton = this._form.querySelector('.popup__button');
+    this._textSaveButton = this._saveButton.textContent;
   }
+
   setEventListeners() {
     super.setEventListeners();
     this._form.addEventListener('submit', (evt) => {
       evt.preventDefault();
       this._handleSubmit();
+
     })
   }
 
@@ -17,9 +22,11 @@ export class PopupWithDelCards extends Popup {
     this._handleSubmit = action;
   }
 
-  // open({cardId, cards}) {
-  //   super.open();
-  //   this._cardId = cardId;
-  //   this._cards = cards;
-  // }
+  renderLoading(isLoading, text = "Удаление...") {
+    if (isLoading) {
+      this._saveButton.textContent = text;
+    } else {
+      this._saveButton.textContent = this._textSaveButton;
+    }
+  }
 }

@@ -16,9 +16,7 @@
         <section class="profile">
           <div class="profile__data">
             <div class="profile__avatar-edit">
-              <img class="profile__avatar"
-              src="<%=require("./images/Avatar.jpg")%>" alt="аватар пользователя
-              странички">
+              <img class="profile__avatar" src="<%=require("./images/Avatar.jpg")%>" alt="аватар пользователя странички">
             </div>
             <div class="profile__info">
               <div class="profile__title">
@@ -42,7 +40,7 @@
                 <h2 class="element__group-title"></h2>
                 <div class="element__group-like">
                   <button class="element__like" type="button"></button>
-                  <p class="element__like-counter">0</p>
+                  <p class="element__like-counter"></p>
                 </div>
               </div>
             </article>
@@ -59,20 +57,8 @@
       <div class="popup__container popup__container-avatar">
         <button class="popup__close-icon" type="button"></button>
         <h2 class="popup__title">Обновить аватар</h2>
-        <form
-          class="popup__form popup__form-avatar"
-          name="popup-avatar"
-          novalidate
-        >
-          <input
-            class="popup__input popup__input_avatar"
-            name="avatar"
-            id="avatar-input"
-            type="url"
-            placeholder="Ссылка на фото"
-            minlength="2"
-            required
-          />
+        <form class="popup__form popup__form-avatar" name="popup-avatar" novalidate>
+          <input class="popup__input popup__input_avatar" name="avatar" id="avatar-input" type="url" placeholder="Ссылка на фото" minlength="2" required/>
           <span class="popup__input-error avatar-input-error"></span>
           <button class="popup__button" type="submit">Сохранить</button>
         </form>
@@ -84,27 +70,9 @@
         <button class="popup__close-icon" type="button"></button>
         <h2 class="popup__title">Редактировать профиль</h2>
         <form class="popup__form popup__form-info" name="popup-form" novalidate>
-          <input
-            class="popup__input popup__input_info_name"
-            name="name"
-            id="name-input"
-            type="text"
-            placeholder="Имя"
-            minlength="2"
-            maxlength="40"
-            required
-          />
+          <input class="popup__input popup__input_info_name" name="name" id="name-input" type="text" placeholder="Имя" minlength="2" maxlength="40" required/>
           <span class="popup__input-error name-input-error"></span>
-          <input
-            class="popup__input popup__input_info_job"
-            name="about"
-            id="job-input"
-            type="text"
-            placeholder="Профессия"
-            minlength="2"
-            maxlength="200"
-            required
-          />
+          <input class="popup__input popup__input_info_job" name="about" id="job-input" type="text" placeholder="Профессия" minlength="2" maxlength="200" required/>
           <span class="popup__input-error job-input-error"></span>
           <button class="popup__button" type="submit">Сохранить</button>
         </form>
@@ -115,31 +83,10 @@
       <div class="popup__container">
         <button class="popup__close-icon" type="button"></button>
         <h2 class="popup__title">Новое место</h2>
-        <form
-          class="popup__form popup__form-cards"
-          id="form-popup_cards"
-          name="popup-form"
-          novalidate
-        >
-          <input
-            class="popup__input popup__input_photo_name"
-            name="name"
-            id="title-input"
-            type="text"
-            placeholder="Название"
-            minlength="2"
-            maxlength="30"
-            required
-          />
+        <form class="popup__form popup__form-cards" id="form-popup_cards" name="popup-form" novalidate>
+          <input class="popup__input popup__input_photo_name" name="name" id="title-input" type="text" placeholder="Название" minlength="2" maxlength="30" required/>
           <span class="popup__input-error title-input-error"></span>
-          <input
-            class="popup__input popup__input_photo_link"
-            name="link"
-            id="link-input"
-            type="url"
-            placeholder="Ссылка на картинку"
-            required
-          />
+          <input class="popup__input popup__input_photo_link" name="link" id="link-input" type="url" placeholder="Ссылка на картинку" required/>
           <span class="popup__input-error link-input-error"></span>
           <button class="popup__button" type="submit">Сохранить</button>
         </form>
@@ -150,11 +97,7 @@
       <div class="popup__container popup__container-delete-cards">
         <button class="popup__close-icon" type="button"></button>
         <h2 class="popup__title">Вы уверены?</h2>
-        <form
-          class="popup__form popup__form-delete-cards"
-          name="popup-delete-cards"
-          novalidate
-        >
+        <form class="popup__form popup__form-delete-cards" name="popup-delete-cards" novalidate>
           <button class="popup__button" type="submit">Да</button>
         </form>
       </div>

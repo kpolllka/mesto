@@ -1,5 +1,4 @@
 import "./index.css";
-import { initialCards } from "../consts/indexCards.js";
 import { Section } from "../components/Section.js";
 import { Card } from "../components/Card.js";
 import { FormValidator } from "../components/FormValidator.js";
@@ -45,11 +44,9 @@ Promise.all([api.getUserInfo(), api.getCardsInfo()])
   })
   .catch((error) => console.log(`Ошибка ${error}`));
 
-
-
-
 //ПОПАП ИЗМЕНЕНИЯ АВАТАРА
 const handleAvatarFormSubmit = (item) => {
+  popupWithAvatar.renderLoading(true);
   api
     .setAvatarEdit(item)
     .then((data) => {
@@ -57,7 +54,8 @@ const handleAvatarFormSubmit = (item) => {
       userInfo.setUserInfo(data);
     })
     .then(() => popupWithAvatar.close())
-    .catch((error) => console.log(`Ошибка ${error}`));
+    .catch((error) => console.log(`Ошибка ${error}`))
+    .finally(() => popupWithAvatar.renderLoading(false));
 };
 
 const popupWithAvatar = new PopupWithForm(popupAvatar, handleAvatarFormSubmit);
@@ -77,13 +75,15 @@ const userInfo = new UserInfo({
 });
 
 const handleProfileFormSubmit = (item) => {
+  popupWithInfo.renderLoading(true);
   api
     .setUserEdit(item)
     .then((res) => {
       userInfo.setUserInfo(res);
     })
     .then(() => popupWithInfo.close())
-    .catch((error) => console.log(`Ошибка ${error}`));
+    .catch((error) => console.log(`Ошибка ${error}`))
+    .finally(() => popupWithInfo.renderLoading(false));
 };
 
 const popupWithInfo = new PopupWithForm(popupInfo, handleProfileFormSubmit);
@@ -101,12 +101,16 @@ popupWithInfo.setEventListeners();
 
 //ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ
 const handleNewCardsFormSubmit = (data) => {
-  api.createNewCards(data).then((res) => {
+  popupWithCard.renderLoading(true);
+  api
+  .createNewCards(data)
+  .then((res) => {
     section
       .addItem(createCard(res))
   })
   .then(() => popupWithCard.close())
-  .catch((error) => console.log(`Ошибка ${error}`));
+  .catch((error) => console.log(`Ошибка ${error}`))
+  .finally(() => popupWithCard.renderLoading(false));
 };
 
 const popupWithCard = new PopupWithForm(popupCards, handleNewCardsFormSubmit);
@@ -126,65 +130,50 @@ const openPopupPhoto = (obj) => {
   popupWithImage.open(obj);
 };
 
-//ОТРИСОВКА КАРТОЧЕК МАССИВА
+//ПОПАП УДАЛЕНИЯ КАРТОЧКИ
+const popupWithDelCard = new PopupWithDelCards(popupDelCards);
+popupWithDelCard.setEventListeners();
+
+//ОТРИСОВКА КАРТОЧЕК
 const createCard = (data) => {
   const newCard = new Card({data: data, userId: userId, templateSelector: "#template-element", openPopupPhoto,
-  handleDelCard: () => {
-    popupWithDelCard.open();
+  handleDelCard: () => { //удаление своих карточек
     popupWithDelCard.delCardSubmit(() => {
+      popupWithDelCard.renderLoading(true);
 
       api
-      .delCard()
-      .then(()=>{
-        console.log(data.card);
-        // newCard.removeCard();
-        // popupWithDelCard.close();
-      })
-      .catch((error)=> console.log(`Ошибка: ${error}`))
-      .finally(() => {
+      .delCard(data._id)
+      .then(() => {
+        newCard.removeCard(data._id);
         popupWithDelCard.close();
       })
-    })
-
-
-  }
+      .catch((error) => console.log(`Ошибка: ${error}`))
+      .finally(() => {
+        popupWithDelCard.renderLoading(false);
+        popupWithDelCard.close();
+      })
+    }),
+    popupWithDelCard.open();
+  },
+  handleLikeCard
 })
 return newCard.generateCard(data);
 }
 
-// function renderCard(card) {
-//   const cardElement = createCard(card);
-//   section.addItem(cardElement);
-// }
+function handleLikeCard (data) { //добавление и удаление лайков карточек
+
+  api
+  .toggleLike(data.cardInfo())
+  .then(res => data.setLike(res));
+}
+
 const section = new Section({ renderer: createCard }, elementsContainer);
-
-//ПОПАП УДАЛЕНИЯ КАРТОЧКИ
-const popupWithDelCard = new PopupWithDelCards('.popup_delete-cards');
-popupWithDelCard.setEventListeners();
-
-//УДАЛЕНИЕ КАРТОЧКИ
-// function handleDelCard(card){
-//   popupWithDelCard.open(card);
-//   popupWithDelCard.delCardSubmit((card) => {
-
-//     api.delCard(card._id)
-//     .then(()=>{
-//       popupWithDelCard.close();
-//       card.removeCard();
-
-//     })
-//     .catch((error)=> console.log(`Ошибка: ${error}`))
-//   })
-
-// }
-
-
 
 //РЕАЛИЗАЦИЯ ВАЛИДАЦИИ ФОРМ ПРОФИЛЯ, КАРТОЧЕК, АВАТАРА
 const infoFormValidation = new FormValidator(formElementInfo, object); //экземпляр валидации для профиля
 const cardsFormValidation = new FormValidator(formElementCards, object); //экземпляр валидации для добавления карточки
-const avatarFormValidation = new FormValidator(formElementAvatar, object);
+const avatarFormValidation = new FormValidator(formElementAvatar, object); //экземпляр валидации для аватара
 
 infoFormValidation.enableValidation(); //запуск валидации в попапе профиля
 cardsFormValidation.enableValidation(); //запуск валидации в попапе добавления карточек
-avatarFormValidation.enableValidation();
+avatarFormValidation.enableValidation(); //запуск валидации в попапе смены аватара
