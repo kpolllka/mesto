@@ -144,13 +144,12 @@ const createCard = (data) => {
       api
       .delCard(data._id)
       .then(() => {
-        newCard.removeCard(data._id);
+        newCard.removeCard();
         popupWithDelCard.close();
       })
       .catch((error) => console.log(`Ошибка: ${error}`))
       .finally(() => {
         popupWithDelCard.renderLoading(false);
-        popupWithDelCard.close();
       })
     }),
     popupWithDelCard.open();
@@ -164,7 +163,8 @@ function handleLikeCard (data) { //добавление и удаление ла
 
   api
   .toggleLike(data.cardInfo())
-  .then(res => data.setLike(res));
+  .then(res => data.setLike(res))
+  .catch((error) => console.log(`Ошибка: ${error}`));
 }
 
 const section = new Section({ renderer: createCard }, elementsContainer);

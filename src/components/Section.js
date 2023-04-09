@@ -4,11 +4,9 @@ export class Section {
     this._container = document.querySelector(containerSelector);
   }
 
-  renderItems(items) {//отрисовка массива карточек
-    this._items = items;
-    this._items.forEach((element) => {
+  renderItems(items) {//отрисовка карточек
+    items.forEach((element) => {
       this._container.append(this._renderer(element));
-      // this._renderer(element);
     });
   }
 

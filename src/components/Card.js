@@ -36,12 +36,12 @@ export class Card {
     this._likeCount = this._card.querySelector('.element__like-counter'); //нашли
     this._likeCount.textContent = this._likeCounter;
 
-    // if (this._isLike) {
-    //   this._like.classList.add('element__like_active');
-    // }
+    if (this._isLike) {
+      this._like.classList.add('element__like_active');
+    }
 
-    this._isLike ? this._like.classList.add('element__like_active') : null; //аналог записи в комменте выше
-
+    // this._isLike ? this._like.classList.add('element__like_active') : null; //аналог записи предыдущих 3х строчек
+    
     this._delCardButton();
 
     this._setEventListeners();
